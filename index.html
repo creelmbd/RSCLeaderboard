@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSC Scoreboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8 text-green-400">RSC Scoreboard</h1>
+
+        <!-- Course Information -->
+        <div class="mb-8 overflow-x-auto">
+            <table class="w-full text-center">
+                <thead>
+                    <tr class="course-info text-white">
+                        <th class="px-4 py-2">PAR</th>
+                        <th class="px-4 py-2">YARDS</th>
+                        <th class="px-4 py-2">RATING</th>
+                        <th class="px-4 py-2">SLOPE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-gray-800">
+                        <td class="px-4 py-2">70</td>
+                        <td class="px-4 py-2">6044</td>
+                        <td class="px-4 py-2">74.8</td>
+                        <td class="px-4 py-2">133</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Course Layout -->
+        <div class="mb-8 overflow-x-auto">
+            <table class="w-full text-center text-sm">
+                <thead>
+                    <tr class="course-info text-white">
+                        <th class="px-2 py-2">HOLE</th>
+                        <th class="px-2 py-2">1</th>
+                        <th class="px-2 py-2">2</th>
+                        <th class="px-2 py-2">3</th>
+                        <th class="px-2 py-2">4</th>
+                        <th class="px-2 py-2">5</th>
+                        <th class="px-2 py-2">6</th>
+                        <th class="px-2 py-2">7</th>
+                        <th class="px-2 py-2">8</th>
+                        <th class="px-2 py-2">9</th>
+                        <th class="px-2 py-2">OUT</th>
+                        <th class="px-2 py-2">10</th>
+                        <th class="px-2 py-2">11</th>
+                        <th class="px-2 py-2">12</th>
+                        <th class="px-2 py-2">13</th>
+                        <th class="px-2 py-2">14</th>
+                        <th class="px-2 py-2">15</th>
+                        <th class="px-2 py-2">16</th>
+                        <th class="px-2 py-2">17</th>
+                        <th class="px-2 py-2">18</th>
+                        <th class="px-2 py-2">IN</th>
+                        <th class="px-2 py-2">TOT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-gray-800">
+                        <td class="px-2 py-2 font-bold text-green-400">YDS</td>
+                        <td class="px-2 py-2">395</td>
+                        <td class="px-2 py-2">385</td>
+                        <td class="px-2 py-2">440</td>
+                        <td class="px-2 py-2">214</td>
+                        <td class="px-2 py-2">424</td>
+                        <td class="px-2 py-2">187</td>
+                        <td class="px-2 py-2">380</td>
+                        <td class="px-2 py-2">469</td>
+                        <td class="px-2 py-2">175</td>
+                        <td class="px-2 py-2">3069</td>
+                        <td class="px-2 py-2">385</td>
+                        <td class="px-2 py-2">384</td>
+                        <td class="px-2 py-2">602</td>
+                        <td class="px-2 py-2">211</td>
+                        <td class="px-2 py-2">306</td>
+                        <td class="px-2 py-2">340</td>
+                        <td class="px-2 py-2">340</td>
+                        <td class="px-2 py-2">451</td>
+                        <td class="px-2 py-2">414</td>
+                        <td class="px-2 py-2">3433</td>
+                        <td class="px-2 py-2">6502</td>
+                    </tr>
+                    <tr class="bg-gray-800">
+                        <td class="px-2 py-2 font-bold text-green-400">PAR</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">3</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">3</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">3</td>
+                        <td class="px-2 py-2">33</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">5</td>
+                        <td class="px-2 py-2">3</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">5</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">37</td>
+                        <td class="px-2 py-2">70</td>
+                    </tr>
+                    <tr class="bg-gray-800">
+                        <td class="px-2 py-2 font-bold text-green-400">HCP</td>
+                        <td class="px-2 py-2">10</td>
+                        <td class="px-2 py-2">8</td>
+                        <td class="px-2 py-2">2</td>
+                        <td class="px-2 py-2">18</td>
+                        <td class="px-2 py-2">12</td>
+                        <td class="px-2 py-2">16</td>
+                        <td class="px-2 py-2">6</td>
+                        <td class="px-2 py-2">4</td>
+                        <td class="px-2 py-2">14</td>
+                        <td class="px-2 py-2"></td>
+                        <td class="px-2 py-2">11</td>
+                        <td class="px-2 py-2">5</td>
+                        <td class="px-2 py-2">1</td>
+                        <td class="px-2 py-2">7</td>
+                        <td class="px-2 py-2">13</td>
+                        <td class="px-2 py-2">17</td>
+                        <td class="px-2 py-2">15</td>
+                        <td class="px-2 py-2">9</td>
+                        <td class="px-2 py-2">3</td>
+                        <td class="px-2 py-2"></td>
+                        <td class="px-2 py-2"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tiebreaker Rules -->
+        <div class="mb-8 bg-gray-800 p-4 rounded">
+            <h2 class="text-xl font-bold mb-2 flex items-center text-green-400">
+                <span class="text-yellow-400 mr-2">🏆</span> Tiebreaker Rules
+            </h2>
+            <ul class="list-disc pl-8">
+                <li class="mb-2">Ties will be broken by comparing scores on:</li>
+                <ul class="list-circle pl-8">
+                    <li class="mb-1">The hardest handicap hole first.</li>
+                    <li>If still tied, the 2nd hardest hole, then 3rd hardest, and so on until a winner is determined.</li>
+                </ul>
+                <li class="mt-2">Note: Handicaps are not used for score calculation - they are only used for tiebreakers.</li>
+            </ul>
+        </div>
+
+        <!-- Closest to Pin Winners -->
+        <div class="mb-8 bg-gray-800 p-4 rounded">
+            <h2 class="text-xl font-bold mb-2 text-green-400">Closest to Pin Winners</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-gray-700 p-3 rounded">
+                    <div class="font-bold">Hole #4:</div>
+                    <div id="ctp-display-hole-4">---</div>
+                    <div class="mt-2">
+                        <select id="ctp-hole-4" class="w-full bg-gray-800 p-2 rounded text-white">
+                            <option value="">-- Select Player --</option>
+                            <!-- Player options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+                <div class="bg-gray-700 p-3 rounded">
+                    <div class="font-bold">Hole #6:</div>
+                    <div id="ctp-display-hole-6">---</div>
+                    <div class="mt-2">
+                        <select id="ctp-hole-6" class="w-full bg-gray-800 p-2 rounded text-white">
+                            <option value="">-- Select Player --</option>
+                            <!-- Player options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+                <div class="bg-gray-700 p-3 rounded">
+                    <div class="font-bold">Hole #9:</div>
+                    <div id="ctp-display-hole-9">---</div>
+                    <div class="mt-2">
+                        <select id="ctp-hole-9" class="w-full bg-gray-800 p-2 rounded text-white">
+                            <option value="">-- Select Player --</option>
+                            <!-- Player options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+                <div class="bg-gray-700 p-3 rounded">
+                    <div class="font-bold">Hole #13:</div>
+                    <div id="ctp-display-hole-13">---</div>
+                    <div class="mt-2">
+                        <select id="ctp-hole-13" class="w-full bg-gray-800 p-2 rounded text-white">
+                            <option value="">-- Select Player --</option>
+                            <!-- Player options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Score Legend -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-2 text-green-400">Score Legend</h2>
+            <div class="flex flex-wrap gap-4">
+                <div class="flex items-center">
+                    <div class="w-6 h-6 eagle mr-2"></div>
+                    <span>Eagle or Better</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 birdie mr-2"></div>
+                    <span>Birdie</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 par mr-2"></div>
+                    <span>Par</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 bogey mr-2"></div>
+                    <span>Bogey</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 double-bogey mr-2"></div>
+                    <span>Double Bogey or Worse</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 tie-win mr-2"></div>
+                    <span>Tiebreaker Win</span>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 tie-equal mr-2"></div>
+                    <span>Tied Hole</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pairings List -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4 text-green-400">Pairings</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-gray-800 rounded overflow-hidden">
+                    <div class="team-header p-3 text-xl font-bold">Pairings</div>
+                    <div class="team-row p-3">Butters (6) & Ben (31)</div>
+                    <div class="team-row p-3">Chris (1) & Waldroff (32)</div>
+                    <div class="team-row p-3">Couch (14) & Ray (25)</div>
+                    <div class="team-row p-3">Curry (9) & Brandon (29)</div>
+                    <div class="team-row p-3">Dan (3) & Jason (36)</div>
+                    <div class="team-row p-3">Foxx (5) & Jack (33)</div>
+                </div>
+                <div class="bg-gray-800 rounded overflow-hidden">
+                    <div class="team-header p-3 text-xl font-bold">Pairings</div>
+                    <div class="team-row p-3">Guy (16) & Colton (21)</div>
+                    <div class="team-row p-3">Han (8) & Jim (24)</div>
+                    <div class="team-row p-3">Jarrett (2) & Trey (35)</div>
+                    <div class="team-row p-3">Joe M (17) & Tony (22)</div>
+                    <div class="team-row p-3">Lane (15) & Houck (23)</div>
+                    <div class="team-row p-3">Meister (12) & Jesse (19)</div>
+                </div>
+                <div class="bg-gray-800 rounded overflow-hidden">
+                    <div class="team-header p-3 text-xl font-bold">Pairings</div>
+                    <div class="team-row p-3">Merkle (11) & Josh (30)</div>
+                    <div class="team-row p-3">Minges (18) & Creel (20)</div>
+                    <div class="team-row p-3">Nolan (13) & Miniard (26)</div>
+                    <div class="team-row p-3">Randy (10) & Warman (27)</div>
+                    <div class="team-row p-3">Seth (4) & Jeff (34)</div>
+                    <div class="team-row p-3">Squeek (7) & Noonan (28)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scoreboard -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold mb-4 text-green-400">Leaderboard</h2>
+            <div class="overflow-x-auto">
+                <table id="scoreboard" class="w-full text-center text-sm">
+                    <thead>
+                        <tr class="course-info text-white">
+                            <th class="px-2 py-2">PLACE</th>
+                            <th class="px-2 py-2">TEAM</th>
+                            <th class="px-2 py-2">TOTAL</th>
+                            <th class="px-2 py-2">TO PAR</th>
+                            <th class="px-2 py-2">1</th>
+                            <th class="px-2 py-2">2</th>
+                            <th class="px-2 py-2">3</th>
+                            <th class="px-2 py-2">4</th>
+                            <th class="px-2 py-2">5</th>
+                            <th class="px-2 py-2">6</th>
+                            <th class="px-2 py-2">7</th>
+                            <th class="px-2 py-2">8</th>
+                            <th class="px-2 py-2">9</th>
+                            <th class="px-2 py-2">OUT</th>
+                            <th class="px-2 py-2">10</th>
+                            <th class="px-2 py-2">11</th>
+                            <th class="px-2 py-2">12</th>
+                            <th class="px-2 py-2">13</th>
+                            <th class="px-2 py-2">14</th>
+                            <th class="px-2 py-2">15</th>
+                            <th class="px-2 py-2">16</th>
+                            <th class="px-2 py-2">17</th>
+                            <th class="px-2 py-2">18</th>
+                            <th class="px-2 py-2">IN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scoreboard-body">
+                        <!-- JavaScript will populate this -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Score Form -->
+        <div class="mb-8 bg-gray-800 p-4 rounded">
+            <h2 class="text-xl font-bold mb-4 text-green-400">Add/Edit Score</h2>
+            <form id="score-form" class="space-y-4">
+                <div>
+                    <label class="block mb-1">Select Pairing:</label>
+                    <select id="team-select" class="w-full bg-gray-700 p-2 rounded">
+                        <option value="">Select a Team</option>
+                        <!-- JavaScript will populate team options -->
+                    </select>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-2">Front Nine</h3>
+                    <div class="grid grid-cols-9 gap-2">
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 1</label>
+                            <input type="number" id="hole1" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 2</label>
+                            <input type="number" id="hole2" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 3</label>
+                            <input type="number" id="hole3" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 4</label>
+                            <input type="number" id="hole4" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 5</label>
+                            <input type="number" id="hole5" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 6</label>
+                            <input type="number" id="hole6" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 7</label>
+                            <input type="number" id="hole7" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 8</label>
+                            <input type="number" id="hole8" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 9</label>
+                            <input type="number" id="hole9" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-2">Back Nine</h3>
+                    <div class="grid grid-cols-9 gap-2">
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 10</label>
+                            <input type="number" id="hole10" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 11</label>
+                            <input type="number" id="hole11" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 12</label>
+                            <input type="number" id="hole12" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 13</label>
+                            <input type="number" id="hole13" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 14</label>
+                            <input type="number" id="hole14" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 15</label>
+                            <input type="number" id="hole15" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 16</label>
+                            <input type="number" id="hole16" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 17</label>
+                            <input type="number" id="hole17" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                        <div>
+                            <label class="block text-center text-xs mb-1">Hole 18</label>
+                            <input type="number" id="hole18" class="w-full bg-gray-700 p-2 rounded text-center">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button type="button" id="remove-score-btn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                        Remove Score
+                    </button>
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">
+                        Save Score
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

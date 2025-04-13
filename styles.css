@@ -1,0 +1,174 @@
+/* Golf Scoreboard Styles */
+
+/* Score card color indicators */
+.par {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.birdie {
+  background-color: rgba(0, 128, 0, 0.5);
+}
+
+.eagle {
+  background-color: rgba(0, 128, 0, 0.8);
+}
+
+.bogey {
+  background-color: rgba(255, 0, 0, 0.3);
+}
+
+.double-bogey {
+  background-color: rgba(255, 0, 0, 0.6);
+}
+
+/* Golf Scoreboard Styles */
+
+/* Score card color indicators */
+.par {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.birdie {
+  background-color: rgba(0, 128, 0, 0.5);
+}
+
+.eagle {
+  background-color: rgba(0, 128, 0, 0.8);
+}
+
+.bogey {
+  background-color: rgba(255, 0, 0, 0.3);
+}
+
+.double-bogey {
+  background-color: rgba(255, 0, 0, 0.6);
+}
+
+/* Tiebreaker indicators */
+.tie-win {
+  background-color: rgba(65, 105, 225, 0.5);
+  position: relative;
+}
+
+.tie-win:after {
+  content: "★";
+  position: absolute;
+  top: 0;
+  right: 2px;
+  font-size: 8px;
+  color: gold;
+}
+
+.tie-equal {
+  background-color: rgba(65, 105, 225, 0.2);
+  position: relative;
+}
+
+.tie-equal:after {
+  content: "=";
+  position: absolute;
+  top: 0;
+  right: 2px;
+  font-size: 8px;
+  color: white;
+}
+
+/* Headers and rows */
+.course-info {
+  background-color: rgba(61, 121, 61, 0.8);
+}
+
+.team-header {
+  background-color: rgba(61, 121, 61, 0.8);
+}
+
+.team-row:nth-child(even) {
+  background-color: rgba(30, 30, 30, 0.8);
+}
+
+.team-row:nth-child(odd) {
+  background-color: rgba(40, 40, 40, 0.8);
+}
+
+/* Hover effects */
+.team-row:hover {
+  background-color: rgba(50, 50, 50, 0.9);
+  cursor: pointer;
+}
+
+/* Form styling */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+      padding: 1rem;
+  }
+
+  .team-row {
+      padding: 0.75rem;
+  }
+
+  input, select {
+      font-size: 16px; /* Better for mobile tapping */
+  }
+}
+
+/* Highlight current team */
+.selected-team {
+  background-color: rgba(80, 160, 80, 0.3) !important;
+  border-left: 4px solid #4ADE80;
+}
+
+/* Animation for updates */
+@keyframes highlight {
+  0% { background-color: rgba(74, 222, 128, 0.5); }
+  100% { background-color: transparent; }
+}
+
+.highlight {
+  animation: highlight 2s ease-out;
+}
+
+/* Print styles */
+@media print {
+  body {
+      background-color: white;
+      color: black;
+  }
+
+  .course-info, .team-header {
+      background-color: #eee !important;
+      color: black !important;
+  }
+
+  .team-row:nth-child(even), .team-row:nth-child(odd) {
+      background-color: white !important;
+      color: black !important;
+      border-bottom: 1px solid #ddd;
+  }
+
+  .par, .birdie, .eagle, .bogey, .double-bogey, .tie-win {
+      border: 1px solid #ccc;
+  }
+
+  .bg-gray-800, .bg-gray-700, .bg-gray-900 {
+      background-color: white !important;
+  }
+
+  .text-green-400, .text-white {
+      color: black !important;
+  }
+
+  button, .add-score-form {
+      display: none !important;
+  }
+}

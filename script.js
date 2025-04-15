@@ -237,7 +237,7 @@ function handleRemoveScore() {
         }
         document.getElementById('remove-score-btn').disabled = true;
 
-        alert('Score removed successfully!');
+        console.log('Score removed successfully!');
     } else {
         alert('No score found for this team');
     }

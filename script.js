@@ -14,6 +14,9 @@ let closestToPin = {
 // Initialize skins tracking
 let skinsWinners = {};
 
+// Set the skins pot total
+const SKINS_POT_TOTAL = 360;
+
 // Load saved data from local storage if available
 function loadSavedData() {
     const savedData = localStorage.getItem(STORAGE_KEY);
@@ -322,6 +325,23 @@ function handleRemoveScore() {
     }
 }
 
+// Calculate the payout per skin
+function calculateSkinPayout() {
+    // Count total number of skins won
+    let totalSkinsWon = 0;
+    Object.values(skinsWinners).forEach(skins => {
+        totalSkinsWon += skins.length;
+    });
+
+    // If no skins, return 0
+    if (totalSkinsWon === 0) {
+        return 0;
+    }
+
+    // Calculate payout per skin
+    return SKINS_POT_TOTAL / totalSkinsWon;
+}
+
 // Add Skins Summary to the page
 function renderSkinsSummary() {
     // Use the existing skins table body
@@ -342,13 +362,16 @@ function renderSkinsSummary() {
             row.className = 'bg-gray-800';
 
             const cell = document.createElement('td');
-            cell.colSpan = 3;
+            cell.colSpan = 4; // Updated to span 4 columns (added payout column)
             cell.className = 'px-2 py-4 text-center';
             cell.textContent = 'No skins won yet';
 
             row.appendChild(cell);
             skinsTableBody.appendChild(row);
         } else {
+            // Calculate payout per skin
+            const payoutPerSkin = calculateSkinPayout();
+
             // Add a row for each team with skins
             sortedTeams.forEach(team => {
                 const row = document.createElement('tr');
@@ -371,6 +394,13 @@ function renderSkinsSummary() {
                 holesCell.className = 'px-2 py-2';
                 holesCell.textContent = skinsWinners[team].join(', ');
                 row.appendChild(holesCell);
+
+                // Payout amount
+                const payoutCell = document.createElement('td');
+                payoutCell.className = 'px-2 py-2';
+                const totalPayout = payoutPerSkin * skinsWinners[team].length;
+                payoutCell.textContent = `$${totalPayout.toFixed(2)}`;
+                row.appendChild(payoutCell);
 
                 skinsTableBody.appendChild(row);
             });

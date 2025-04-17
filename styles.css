@@ -172,3 +172,27 @@ input[type="number"] {
       display: none !important;
   }
 }
+
+/* Skins winner indicator - positioned in bottom right */
+.skins-winner {
+  position: relative;
+}
+
+.skins-winner:after {
+  content: "$";
+  position: absolute;
+  bottom: 0;    /* Position at bottom */
+  right: 2px;   /* Position at right with small margin */
+  font-size: 10px;
+  color: gold;
+  font-weight: bold;
+  z-index: 10;  /* Ensure it appears above other content */
+}
+
+/* Skins indicator in legend */
+.skins-indicator {
+  background-color: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: 3px;
+  position: relative;
+}

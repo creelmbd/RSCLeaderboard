@@ -11,6 +11,9 @@ let closestToPin = {
     13: ''
 };
 
+// Initialize skins tracking
+let skinsWinners = {};
+
 // Load saved data from local storage if available
 function loadSavedData() {
     const savedData = localStorage.getItem(STORAGE_KEY);
@@ -18,19 +21,38 @@ function loadSavedData() {
         try {
             const parsedData = JSON.parse(savedData);
             scores = parsedData.scores || [];
-            closestToPin = parsedData.closestToPin || {4: '', 6: '', 9: '', 13: ''};
+            closestToPin = parsedData.closestToPin || {
+                4: '',
+                6: '',
+                9: '',
+                13: ''
+            };
+            skinsWinners = parsedData.skinsWinners || {};
             console.log('Loaded saved scores:', scores);
             console.log('Loaded closest to pin winners:', closestToPin);
+            console.log('Loaded skins winners:', skinsWinners);
         } catch (e) {
             console.error('Error loading saved data:', e);
             // Start with empty scores
             scores = [];
-            closestToPin = {4: '', 6: '', 9: '', 13: ''};
+            closestToPin = {
+                4: '',
+                6: '',
+                9: '',
+                13: ''
+            };
+            skinsWinners = {};
         }
     } else {
         // Start with empty data
         scores = [];
-        closestToPin = {4: '', 6: '', 9: '', 13: ''};
+        closestToPin = {
+            4: '',
+            6: '',
+            9: '',
+            13: ''
+        };
+        skinsWinners = {};
     }
 }
 
@@ -39,7 +61,8 @@ function saveData() {
     try {
         const dataToSave = {
             scores: scores,
-            closestToPin: closestToPin
+            closestToPin: closestToPin,
+            skinsWinners: skinsWinners
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
         console.log('Data saved successfully');
@@ -121,6 +144,56 @@ function updateClosestToPinDisplay() {
     });
 }
 
+// Calculate skins winners
+function calculateSkinsWinners() {
+    skinsWinners = {};
+
+    // Skip if no scores
+    if (scores.length === 0) return;
+
+    // Check each hole (0-17 for the 18 holes)
+    for (let holeIndex = 0; holeIndex < 18; holeIndex++) {
+        let lowestScore = Infinity;
+        let lowestTeams = [];
+        let par = PAR_VALUES[holeIndex];
+
+        // Find lowest score for this hole
+        scores.forEach(team => {
+            const holeScore = team.holes[holeIndex];
+
+            // Skip if no score for this hole
+            if (!holeScore) return;
+
+            // If score is lower than current lowest, reset the array and add this team
+            if (holeScore < lowestScore) {
+                lowestScore = holeScore;
+                lowestTeams = [team.team];
+            }
+            // If score is tied with current lowest, add this team to the array
+            else if (holeScore === lowestScore) {
+                lowestTeams.push(team.team);
+            }
+        });
+
+        // If only one team has the lowest score AND it's a birdie or better, they win the skin
+        if (lowestTeams.length === 1 && lowestScore < par) {
+            const winningTeam = lowestTeams[0];
+
+            // Initialize if this is the team's first skin
+            if (!skinsWinners[winningTeam]) {
+                skinsWinners[winningTeam] = [];
+            }
+
+            // Add the hole number (1-18, not 0-17) to the team's skins list
+            skinsWinners[winningTeam].push(holeIndex + 1);
+        }
+    }
+
+    // Save the updated skins data
+    saveData();
+    console.log('Skins calculated:', skinsWinners);
+}
+
 // Populate score form based on selected team
 function populateScoreForm() {
     const teamSelect = document.getElementById('team-select');
@@ -141,7 +214,7 @@ function populateScoreForm() {
     // If team has existing score, populate form with those values
     if (existingScore) {
         for (let i = 1; i <= 18; i++) {
-            document.getElementById(`hole${i}`).value = existingScore.holes[i-1] || '';
+            document.getElementById(`hole${i}`).value = existingScore.holes[i - 1] || '';
         }
     }
 }
@@ -193,6 +266,9 @@ function handleScoreSubmit(e) {
         });
     }
 
+    // Recalculate skins winners
+    calculateSkinsWinners();
+
     // Save and refresh display
     saveData();
     renderScoreboard();
@@ -203,7 +279,6 @@ function handleScoreSubmit(e) {
         document.getElementById(`hole${i}`).value = '';
     }
     document.getElementById('remove-score-btn').disabled = true;
-
 }
 
 // Handle removing a score
@@ -227,6 +302,10 @@ function handleRemoveScore() {
 
     if (scoreIndex !== -1) {
         scores.splice(scoreIndex, 1);
+
+        // Recalculate skins after removing a score
+        calculateSkinsWinners();
+
         saveData();
         renderScoreboard();
 
@@ -243,92 +322,154 @@ function handleRemoveScore() {
     }
 }
 
+// Add Skins Summary to the page
+function renderSkinsSummary() {
+    // Use the existing skins table body
+    const skinsTableBody = document.getElementById('skins-table-body');
+
+    if (skinsTableBody) {
+        // Clear the existing table content
+        skinsTableBody.innerHTML = '';
+
+        // Sort teams by number of skins won (descending)
+        const sortedTeams = Object.keys(skinsWinners).sort((a, b) => {
+            return skinsWinners[b].length - skinsWinners[a].length;
+        });
+
+        if (sortedTeams.length === 0) {
+            // No skins won yet
+            const row = document.createElement('tr');
+            row.className = 'bg-gray-800';
+
+            const cell = document.createElement('td');
+            cell.colSpan = 3;
+            cell.className = 'px-2 py-4 text-center';
+            cell.textContent = 'No skins won yet';
+
+            row.appendChild(cell);
+            skinsTableBody.appendChild(row);
+        } else {
+            // Add a row for each team with skins
+            sortedTeams.forEach(team => {
+                const row = document.createElement('tr');
+                row.className = 'bg-gray-800';
+
+                // Team name
+                const teamCell = document.createElement('td');
+                teamCell.className = 'px-2 py-2';
+                teamCell.textContent = team;
+                row.appendChild(teamCell);
+
+                // Number of skins
+                const countCell = document.createElement('td');
+                countCell.className = 'px-2 py-2';
+                countCell.textContent = skinsWinners[team].length;
+                row.appendChild(countCell);
+
+                // Holes where skins were won
+                const holesCell = document.createElement('td');
+                holesCell.className = 'px-2 py-2';
+                holesCell.textContent = skinsWinners[team].join(', ');
+                row.appendChild(holesCell);
+
+                skinsTableBody.appendChild(row);
+            });
+        }
+    }
+}
+
 // Render the scoreboard with current data
 function renderScoreboard() {
     const scoreboardBody = document.getElementById('scoreboard-body');
     scoreboardBody.innerHTML = '';
 
     // Find tied scores to determine where tiebreakers apply
-    const scoreGroups = {};
+    const tiedScoreGroups = {};
     scores.forEach(score => {
-        if (!scoreGroups[score.score]) {
-            scoreGroups[score.score] = [];
+        if (!tiedScoreGroups[score.score]) {
+            tiedScoreGroups[score.score] = [];
         }
-        scoreGroups[score.score].push(score);
+        tiedScoreGroups[score.score].push(score);
     });
 
     // Process tiebreakers and mark winning and tied holes
     const tieWinningHoles = {};
     const tieEqualHoles = {};
 
-    for (const [totalScore, tiedTeams] of Object.entries(scoreGroups)) {
-        if (tiedTeams.length > 1) {
-            // There's a tie to break
-            tieWinningHoles[totalScore] = {};
-            tieEqualHoles[totalScore] = {};
+    // Only process tiebreakers for teams with identical total scores
+    for (const [totalScore, tiedTeams] of Object.entries(tiedScoreGroups)) {
+        // Skip if there's only one team with this score (no tie to break)
+        if (tiedTeams.length <= 1) continue;
 
-            // For each tied team, initialize their tiebreaker info
-            tiedTeams.forEach(team => {
-                tieWinningHoles[totalScore][team.team] = [];
-                tieEqualHoles[totalScore][team.team] = [];
+        // There's a tie to break
+        tieWinningHoles[totalScore] = {};
+        tieEqualHoles[totalScore] = {};
+
+        // For each tied team, initialize their tiebreaker info
+        tiedTeams.forEach(team => {
+            tieWinningHoles[totalScore][team.team] = [];
+            tieEqualHoles[totalScore][team.team] = [];
+        });
+
+        // Find the holes that break the tie in order of handicap difficulty
+        const sortedHandicaps = [...HANDICAP_VALUES].sort((a, b) => a - b);
+
+        // Keep track of teams still tied after each hole
+        let remainingTiedTeams = [...tiedTeams];
+
+        for (const handicap of sortedHandicaps) {
+            const holeIndex = HANDICAP_VALUES.indexOf(handicap);
+
+            // If only one team remains, we're done breaking ties
+            if (remainingTiedTeams.length <= 1) break;
+
+            // Get scores for this hole from teams still tied
+            const holeScores = remainingTiedTeams.map(team => ({
+                team: team.team,
+                score: team.holes[holeIndex] || 0
+            }));
+
+            // Group teams by their score on this hole
+            const holeScoreGroups = {};
+            holeScores.forEach(h => {
+                if (!holeScoreGroups[h.score]) {
+                    holeScoreGroups[h.score] = [];
+                }
+                holeScoreGroups[h.score].push(h.team);
             });
 
-            // Find the holes that break the tie in order of handicap difficulty
-            const sortedHandicaps = [...HANDICAP_VALUES].sort((a, b) => a - b);
+            // Find the lowest score for this hole
+            const scores = Object.keys(holeScoreGroups).map(Number).filter(s => s > 0);
 
-            // Keep track of teams still tied after each hole
-            let remainingTiedTeams = [...tiedTeams];
+            if (scores.length > 0) {
+                // There's a difference in scores that can break ties
+                const lowestScore = Math.min(...scores);
 
-            for (const handicap of sortedHandicaps) {
-                const holeIndex = HANDICAP_VALUES.indexOf(handicap);
-
-                // If only one team remains, we're done breaking ties
-                if (remainingTiedTeams.length <= 1) break;
-
-                // Get scores for this hole from teams still tied
-                const holeScores = remainingTiedTeams.map(team => ({
-                    team: team.team,
-                    score: team.holes[holeIndex] || 0
-                }));
-
-                // Group teams by their score on this hole
-                const scoreGroups = {};
-                holeScores.forEach(h => {
-                    if (!scoreGroups[h.score]) {
-                        scoreGroups[h.score] = [];
-                    }
-                    scoreGroups[h.score].push(h.team);
-                });
-
-                // Sort scores from lowest to highest
-                const sortedScores = Object.keys(scoreGroups).map(Number).sort((a, b) => a - b);
-
-                if (sortedScores.length > 1) {
-                    // There's a difference in scores that can break ties
-                    const lowestScore = sortedScores[0];
-
-                    // Mark winning holes for teams with lowest score
-                    scoreGroups[lowestScore].forEach(team => {
+                // Mark winning holes for teams with lowest score
+                if (holeScoreGroups[lowestScore]) {
+                    holeScoreGroups[lowestScore].forEach(team => {
                         tieWinningHoles[totalScore][team].push(holeIndex);
                     });
+                }
 
-                    // Mark tied holes for teams with same score but not the lowest
-                    sortedScores.slice(1).forEach(score => {
-                        scoreGroups[score].forEach(team => {
+                // Mark tied holes for teams with same score but not the lowest
+                scores.filter(score => score !== lowestScore).forEach(score => {
+                    if (holeScoreGroups[score]) {
+                        holeScoreGroups[score].forEach(team => {
                             tieEqualHoles[totalScore][team].push(holeIndex);
                         });
-                    });
+                    }
+                });
 
-                    // Update remaining tied teams to only include those with the lowest score
-                    remainingTiedTeams = remainingTiedTeams.filter(team =>
-                        scoreGroups[lowestScore].includes(team.team)
-                    );
-                } else {
-                    // All teams have the same score on this hole
-                    remainingTiedTeams.forEach(team => {
-                        tieEqualHoles[totalScore][team.team].push(holeIndex);
-                    });
-                }
+                // Update remaining tied teams to only include those with the lowest score
+                remainingTiedTeams = remainingTiedTeams.filter(team =>
+                    holeScoreGroups[lowestScore] && holeScoreGroups[lowestScore].includes(team.team)
+                );
+            } else {
+                // All teams have no score for this hole yet
+                remainingTiedTeams.forEach(team => {
+                    tieEqualHoles[totalScore][team.team].push(holeIndex);
+                });
             }
         }
     }
@@ -386,15 +527,25 @@ function renderScoreboard() {
 
             // Check if this is a tie-winning or tie-equal hole for this team
             const isTieWinningHole = tieWinningHoles[score.score] &&
-                                     tieWinningHoles[score.score][score.team] &&
-                                     tieWinningHoles[score.score][score.team].includes(i);
+                tieWinningHoles[score.score][score.team] &&
+                tieWinningHoles[score.score][score.team].includes(i);
 
             const isTieEqualHole = tieEqualHoles[score.score] &&
-                                    tieEqualHoles[score.score][score.team] &&
-                                    tieEqualHoles[score.score][score.team].includes(i);
+                tieEqualHoles[score.score][score.team] &&
+                tieEqualHoles[score.score][score.team].includes(i);
+
+            // Check if this is a skin-winning hole for this team
+            const isSkinsWinner = skinsWinners[score.team] &&
+                skinsWinners[score.team].includes(i + 1);
 
             // Color coding based on score relative to par and tie status
             if (holeScore) {
+                // First check for skins winner (should be applied regardless of other styles)
+                if (isSkinsWinner) {
+                    cell.classList.add('skins-winner');
+                }
+
+                // Then add appropriate styling class based on score or tiebreaker status
                 if (isTieWinningHole) {
                     cell.classList.add('tie-win');
                 } else if (isTieEqualHole) {
@@ -438,6 +589,9 @@ function renderScoreboard() {
 
         scoreboardBody.appendChild(row);
     });
+
+    // Render the skins summary table
+    renderSkinsSummary();
 }
 
 // Break ties according to the rules
@@ -450,10 +604,25 @@ function breakTie(scoreA, scoreB) {
         // Find the hole index with this handicap
         const holeIndex = HANDICAP_VALUES.indexOf(handicap);
 
-        // Compare scores on this hole
+        // Get the scores for this hole (using 0 if no score is recorded)
         const scoreAOnHole = scoreA.holes[holeIndex] || 0;
         const scoreBOnHole = scoreB.holes[holeIndex] || 0;
 
+        // Skip this hole if both teams have no score yet
+        if (scoreAOnHole === 0 && scoreBOnHole === 0) {
+            continue;
+        }
+
+        // If a team hasn't played this hole yet but the other has, the one who has played gets the worse position
+        if (scoreAOnHole === 0 && scoreBOnHole > 0) {
+            return 1; // A comes after B
+        }
+
+        if (scoreAOnHole > 0 && scoreBOnHole === 0) {
+            return -1; // A comes before B
+        }
+
+        // If both have scores and they're different, return the comparison
         if (scoreAOnHole !== scoreBOnHole) {
             return scoreAOnHole - scoreBOnHole; // Lower score wins
         }
@@ -464,10 +633,11 @@ function breakTie(scoreA, scoreB) {
 }
 
 // Document ready function
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Initial setup
     populateTeamSelect();
     loadSavedData();
+    calculateSkinsWinners(); // Calculate initial skins
     renderScoreboard();
     populateClosestToPinSelects();
     updateClosestToPinDisplay();
@@ -485,16 +655,16 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('remove-score-btn').disabled = true;
 
     // Add closest to pin change handlers
-    document.getElementById('ctp-hole-4').addEventListener('change', function() {
+    document.getElementById('ctp-hole-4').addEventListener('change', function () {
         handleClosestToPinChange(4, this.value);
     });
-    document.getElementById('ctp-hole-6').addEventListener('change', function() {
+    document.getElementById('ctp-hole-6').addEventListener('change', function () {
         handleClosestToPinChange(6, this.value);
     });
-    document.getElementById('ctp-hole-9').addEventListener('change', function() {
+    document.getElementById('ctp-hole-9').addEventListener('change', function () {
         handleClosestToPinChange(9, this.value);
     });
-    document.getElementById('ctp-hole-13').addEventListener('change', function() {
+    document.getElementById('ctp-hole-13').addEventListener('change', function () {
         handleClosestToPinChange(13, this.value);
     });
 });
@@ -506,23 +676,112 @@ const HANDICAP_VALUES = [10, 8, 2, 18, 12, 16, 6, 4, 14, 11, 5, 1, 7, 13, 17, 15
 const TOTAL_PAR = 70;
 
 // Team pairings
-const PAIRINGS = [
-    { team: "Butters & Ben", player1: "Butters", player2: "Ben", handicaps: [6, 31] },
-    { team: "Chris & Waldroff", player1: "Chris", player2: "Waldroff", handicaps: [1, 32] },
-    { team: "Couch & Ray", player1: "Couch", player2: "Ray", handicaps: [14, 25] },
-    { team: "Curry & Brandon", player1: "Curry", player2: "Brandon", handicaps: [9, 29] },
-    { team: "Dan & Jason", player1: "Dan", player2: "Jason", handicaps: [3, 36] },
-    { team: "Foxx & Jack", player1: "Foxx", player2: "Jack", handicaps: [5, 33] },
-    { team: "Guy & Colton", player1: "Guy", player2: "Colton", handicaps: [16, 21] },
-    { team: "Han & Jim", player1: "Han", player2: "Jim", handicaps: [8, 24] },
-    { team: "Jarrett & Trey", player1: "Jarrett", player2: "Trey", handicaps: [2, 35] },
-    { team: "Joe M & Tony", player1: "Joe M", player2: "Tony", handicaps: [17, 22] },
-    { team: "Lane & Houck", player1: "Lane", player2: "Houck", handicaps: [15, 23] },
-    { team: "Meister & Jesse", player1: "Meister", player2: "Jesse", handicaps: [12, 19] },
-    { team: "Merkle & Josh", player1: "Merkle", player2: "Josh", handicaps: [11, 30] },
-    { team: "Minges & Creel", player1: "Minges", player2: "Creel", handicaps: [18, 20] },
-    { team: "Nolan & Miniard", player1: "Nolan", player2: "Miniard", handicaps: [13, 26] },
-    { team: "Randy & Warman", player1: "Randy", player2: "Warman", handicaps: [10, 27] },
-    { team: "Seth & Jeff", player1: "Seth", player2: "Jeff", handicaps: [4, 34] },
-    { team: "Squeek & Noonan", player1: "Squeek", player2: "Noonan", handicaps: [7, 28] }
+const PAIRINGS = [{
+        team: "Butters & Ben",
+        player1: "Butters",
+        player2: "Ben",
+        handicaps: [6, 31]
+    },
+    {
+        team: "Chris & Waldroff",
+        player1: "Chris",
+        player2: "Waldroff",
+        handicaps: [1, 32]
+    },
+    {
+        team: "Couch & Ray",
+        player1: "Couch",
+        player2: "Ray",
+        handicaps: [14, 25]
+    },
+    {
+        team: "Curry & Brandon",
+        player1: "Curry",
+        player2: "Brandon",
+        handicaps: [9, 29]
+    },
+    {
+        team: "Dan & Jason",
+        player1: "Dan",
+        player2: "Jason",
+        handicaps: [3, 36]
+    },
+    {
+        team: "Foxx & Jack",
+        player1: "Foxx",
+        player2: "Jack",
+        handicaps: [5, 33]
+    },
+    {
+        team: "Guy & Colton",
+        player1: "Guy",
+        player2: "Colton",
+        handicaps: [16, 21]
+    },
+    {
+        team: "Han & Jim",
+        player1: "Han",
+        player2: "Jim",
+        handicaps: [8, 24]
+    },
+    {
+        team: "Jarrett & Trey",
+        player1: "Jarrett",
+        player2: "Trey",
+        handicaps: [2, 35]
+    },
+    {
+        team: "Joe M & Tony",
+        player1: "Joe M",
+        player2: "Tony",
+        handicaps: [17, 22]
+    },
+    {
+        team: "Lane & Houck",
+        player1: "Lane",
+        player2: "Houck",
+        handicaps: [15, 23]
+    },
+    {
+        team: "Meister & Jesse",
+        player1: "Meister",
+        player2: "Jesse",
+        handicaps: [12, 19]
+    },
+    {
+        team: "Merkle & Josh",
+        player1: "Merkle",
+        player2: "Josh",
+        handicaps: [11, 30]
+    },
+    {
+        team: "Minges & Creel",
+        player1: "Minges",
+        player2: "Creel",
+        handicaps: [18, 20]
+    },
+    {
+        team: "Nolan & Miniard",
+        player1: "Nolan",
+        player2: "Miniard",
+        handicaps: [13, 26]
+    },
+    {
+        team: "Randy & Warman",
+        player1: "Randy",
+        player2: "Warman",
+        handicaps: [10, 27]
+    },
+    {
+        team: "Seth & Jeff",
+        player1: "Seth",
+        player2: "Jeff",
+        handicaps: [4, 34]
+    },
+    {
+        team: "Squeek & Noonan",
+        player1: "Squeek",
+        player2: "Noonan",
+        handicaps: [7, 28]
+    }
 ];

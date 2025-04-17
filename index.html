@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body class="bg-gray-900 text-white">
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-4xl font-bold text-center mb-8 text-green-400">RSC Scoreboard</h1>
@@ -148,9 +150,11 @@
                 <li class="mb-2">Ties will be broken by comparing scores on:</li>
                 <ul class="list-circle pl-8">
                     <li class="mb-1">The hardest handicap hole first.</li>
-                    <li>If still tied, the 2nd hardest hole, then 3rd hardest, and so on until a winner is determined.</li>
+                    <li>If still tied, the 2nd hardest hole, then 3rd hardest, and so on until a winner is determined.
+                    </li>
                 </ul>
-                <li class="mt-2">Note: Handicaps are not used for score calculation - they are only used for tiebreakers.</li>
+                <li class="mt-2">Note: Handicaps are not used for score calculation - they are only used for
+                    tiebreakers.</li>
             </ul>
         </div>
 
@@ -233,6 +237,13 @@
                     <div class="w-6 h-6 tie-equal mr-2"></div>
                     <span>Tied Hole</span>
                 </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 skins-indicator mr-2" style="position: relative;">
+                        <span
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: gold; font-weight: bold;">$</span>
+                    </div>
+                    <span>Skin</span>
+                </div>
             </div>
         </div>
 
@@ -305,6 +316,28 @@
                     </thead>
                     <tbody id="scoreboard-body">
                         <!-- JavaScript will populate this -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Skins Summary Section -->
+        <div class="mb-8 bg-gray-800 p-4 rounded">
+            <h2 class="text-xl font-bold mb-4 text-green-400">Skins Summary</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-center text-sm">
+                    <thead>
+                        <tr class="course-info text-white">
+                            <th class="px-2 py-2">Team</th>
+                            <th class="px-2 py-2">Skins Won</th>
+                            <th class="px-2 py-2">Holes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="skins-table-body">
+                        <!-- JavaScript will populate this -->
+                        <tr class="bg-gray-800">
+                            <td colspan="3" class="px-2 py-4 text-center">No skins won yet</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -407,7 +440,8 @@
                 </div>
 
                 <div class="flex justify-between">
-                    <button type="button" id="remove-score-btn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button type="button" id="remove-score-btn"
+                        class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed">
                         Remove Score
                     </button>
                     <button type="submit" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">
@@ -420,4 +454,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
